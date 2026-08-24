@@ -1,7 +1,5 @@
 package interfaces;
 
-
-
 import model.Medico;
 import model.Paciente;
 import model.Turno;

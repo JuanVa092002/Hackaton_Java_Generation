@@ -1,33 +1,43 @@
 package clinica;
 
+import clinica.data.DatosCSV;
 import clinica.*;
+import clinica.service.ClinicaService;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Scanner;
 
-public class Main{
+public class Main {
+
     public static void main(String[] args) {
-        ClinicaServece servicio = new ClinicaServece();
+        ClinicaService servicio = new ClinicaService();
         DatosCSV.cargar(servicio);
+
         Scanner captura = new Scanner(System.in);
         boolean salir = false;
-        while(!salir){
-             Menu();
-            System.out.println("Porfavor selecione una opcion: ");
+
+        while (!salir) {
+            Menu();
+            System.out.print("Por favor seleccione una opción: ");
             String opciones = captura.nextLine().trim();
-            switch (opciones){
-                case "1" ->{
-                    System.out.println("\nRegistro de Paciente");
-                    System.out.println("Cedula: ");
+
+            switch (opciones) {
+                case "1" -> {
+                    System.out.println("\n--- REGISTRO DE PACIENTE ---");
+                    System.out.print("Cédula: ");
                     String cedula = captura.nextLine();
-                    System.out.println("Nombre: ");
+                    System.out.print("Nombre: ");
                     String nombre = captura.nextLine();
                     System.out.print("Apellido: ");
                     String apellido = captura.nextLine();
                     System.out.print("Teléfono: ");
                     String telefono = captura.nextLine();
+
                     Paciente p = new Paciente(cedula, nombre, apellido, telefono);
-                    servicio.resgistrarPaciente(p);
+                    servicio.registrarPaciente(p);
                 }
-                case "2" ->{
+                case "2" -> {
                     System.out.println("\n--- REGISTRAR MÉDICO ---");
                     System.out.print("Nombre: ");
                     String nombre = captura.nextLine();
@@ -35,6 +45,7 @@ public class Main{
                     String apellido = captura.nextLine();
                     System.out.print("Especialidad (GENERAL, PEDIATRIA, CARDIOLOGIA, URGENCIAS): ");
                     String espStr = captura.nextLine().trim().toUpperCase();
+
                     try {
                         Especialidad esp = Especialidad.valueOf(espStr);
                         Medico m = new Medico(nombre, apellido, esp);
@@ -43,7 +54,7 @@ public class Main{
                         System.out.println("Especialidad no válida.");
                     }
                 }
-                case "3" ->{
+                case "3" -> {
                     System.out.println("\n--- ASIGNAR TURNO ---");
                     System.out.print("Cédula del paciente: ");
                     String cedula = captura.nextLine().trim();
@@ -59,6 +70,7 @@ public class Main{
                         System.out.println("Error: Paciente o médico no encontrado.");
                         break;
                     }
+
                     System.out.print("Año: ");
                     int anio = Integer.parseInt(captura.nextLine().trim());
                     System.out.print("Mes (1-12): ");
@@ -73,22 +85,22 @@ public class Main{
                     LocalDateTime fechaHora = LocalDateTime.of(anio, mes, dia, hora, minuto);
                     Turno turno = new Turno(pac, med, fechaHora);
                     servicio.asignarTurno(turno);
-
-
                 }
-                case "4" ->{
-                    System.out.print("Ingrese fecha (YY-MM-DD): ");
+                case "4" -> {
+                    System.out.print("Ingrese fecha (YYYY-MM-DD): ");
                     String fechaStr = captura.nextLine().trim();
-                    servicio.listarTurnosDelDia(LocalDate.parse(fechaStr)).forEach(System.out.println);
-
-
+                    try {
+                        servicio.listarTurnosDelDia(LocalDate.parse(fechaStr)).forEach(System.out.println);
+                    } catch (Exception e) {
+                        System.out.println("Formato de fecha inválido. Debe ser YYYY-MM-DD.");
+                    }
                 }
-                case "5" ->{
+                case "5" -> {
                     System.out.print("ID del turno a cancelar: ");
                     int id = Integer.parseInt(captura.nextLine().trim());
                     servicio.cancelarTurno(id);
                 }
-                case "6" ->{
+                case "6" -> {
                     System.out.print("Nombre del médico: ");
                     String nom = captura.nextLine().trim();
                     System.out.print("Apellido del médico: ");
@@ -99,9 +111,8 @@ public class Main{
                     } else {
                         System.out.println("Médico no encontrado.");
                     }
-
                 }
-                case "7" ->{
+                case "7" -> {
                     System.out.print("Cédula del paciente: ");
                     String ced = captura.nextLine().trim();
                     Paciente pac = servicio.buscarPorCedula(ced);
@@ -110,9 +121,8 @@ public class Main{
                     } else {
                         System.out.println("Paciente no encontrado.");
                     }
-
                 }
-                case "8" ->{
+                case "8" -> {
                     System.out.print("ID del turno: ");
                     int id = Integer.parseInt(captura.nextLine().trim());
                     System.out.print("Nuevo estado (PENDIENTE, ATENDIDO, CANCELADO): ");
@@ -124,36 +134,36 @@ public class Main{
                     } catch (IllegalArgumentException e) {
                         System.out.println("Estado no válido.");
                     }
-
                 }
                 case "9" -> servicio.listarPacientes();
                 case "10" -> servicio.listarMedicos();
-                case "0" ->{
+                case "0" -> {
                     DatosCSV.guardar(servicio);
                     System.out.println("Hasta pronto. Datos guardados.");
                     salir = true;
                 }
-                default -> System.out.println("---------[ERROR]----\nOpcion no valida.");
+                default -> System.out.println("---------[ERROR]-----\nOpción no válida.");
             }
-
+            System.out.println();
         }
-
-        private static void Menu() {
-            System.out.println("==================================================");
-            System.out.println("               CLINICAAPP - MENÚ                  ");
-            System.out.println("==================================================");
-            System.out.println("1. Registrar paciente");
-            System.out.println("2. Registrar médico");
-            System.out.println("3. Asignar turno");
-            System.out.println("4. Listar turnos del día");
-            System.out.println("5. Cancelar turno");
-            System.out.println("6. Ver turnos por médico");
-            System.out.println("7. Ver turnos por paciente");
-            System.out.println("8. Cambiar estado de turno");
-            System.out.println("9. Listar pacientes");
-            System.out.println("10. Listar médicos");
-            System.out.println("0. Salir");
-            System.out.println("==================================================");
     }
-}
+
+    private static void Menu() {
+        String separador = "=".repeat(50);
+        System.out.println(separador);
+        System.out.printf("| %-46s |\n", "CLINICAAPP - MENÚ");
+        System.out.println(separador);
+        System.out.printf("| %-46s |\n", "1. Registrar paciente");
+        System.out.printf("| %-46s |\n", "2. Registrar médico");
+        System.out.printf("| %-46s |\n", "3. Asignar turno");
+        System.out.printf("| %-46s |\n", "4. Listar turnos del día");
+        System.out.printf("| %-46s |\n", "5. Cancelar turno");
+        System.out.printf("| %-46s |\n", "6. Ver turnos por médico");
+        System.out.printf("| %-46s |\n", "7. Ver turnos por paciente");
+        System.out.printf("| %-46s |\n", "8. Cambiar estado de turno");
+        System.out.printf("| %-46s |\n", "9. Listar pacientes");
+        System.out.printf("| %-46s |\n", "10. Listar médicos");
+        System.out.printf("| %-46s |\n", "0. Salir");
+        System.out.println(separador);
+    }
 }
