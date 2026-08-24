@@ -44,3 +44,50 @@ public class Medico implements Registrable {
     public String getApellido() {
         return apellido;
     }
+
+    public void setApellido(String apellido) {
+        if (apellido == null || apellido.trim().isEmpty()) {
+            throw new IllegalArgumentException("El apellido no puede estar vacio");
+        }
+        this.apellido = apellido.trim();
+    }
+
+    public Especialidad getEspecialidad() {
+        return especialidad;
+    }
+
+    public void setEspecialidad(Especialidad especialidad) {
+        if (especialidad == null) {
+            throw new IllegalArgumentException("La especialidad no puede estar vacia");
+        }
+        this.especialidad = especialidad;
+    }
+
+    @Override
+    public String getDatosRegistro() {
+        return toString();
+    }
+
+    @Override
+    public boolean esValido() {
+        return nombre != null && !nombre.trim().isEmpty()
+                && apellido != null && !apellido.trim().isEmpty()
+                && especialidad != null;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Medico)) return false;
+
+        Medico medico = (Medico) o;
+
+        return nombre.equalsIgnoreCase(medico.nombre)
+                && apellido.equalsIgnoreCase(medico.apellido);
+    }
+
+    @Override
+    public String toString() {
+        return "Dr. " + nombre + " " + apellido + " - " + especialidad;
+    }
+}

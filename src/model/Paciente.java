@@ -40,7 +40,7 @@ public class Paciente implements Registrable {  //este registrable de interfaces
 
     public void setCedula(String cedula) {
         if (cedula == null || cedula.trim().isEmpty()) {  //comporbar que no haya enviado un null  y elimianr espacios de los extremos
-            throw new IllegalArgumentException("La cédula no puede ser nula ni vacía");
+            throw new IllegalArgumentException("El documento no puede estar vacio");
         }
         this.cedula = cedula;
     }
@@ -51,7 +51,7 @@ public class Paciente implements Registrable {  //este registrable de interfaces
 
     public void setNombre(String nombre) {
         if (nombre == null || nombre.trim().isEmpty()) {
-            throw new IllegalArgumentException("El nombre no puede ser nulo ni vacío");
+            throw new IllegalArgumentException("El nombre no puede estar vacio");
         }
         this.nombre = nombre.trim();
     }
@@ -62,7 +62,7 @@ public class Paciente implements Registrable {  //este registrable de interfaces
 
     public void setApellido(String apellido) {
         if (apellido == null || apellido.trim().isEmpty()) {
-            throw new IllegalArgumentException("El apellido no puede ser nulo ni vacío");
+            throw new IllegalArgumentException("El apellido no puede estar vacio");
         }
         this.apellido = apellido.trim();
     }
@@ -73,7 +73,7 @@ public class Paciente implements Registrable {  //este registrable de interfaces
 
     public void setTelefono(String telefono) {
         if (telefono == null || !telefono.matches("^[0-9]{7,10}$")) {
-            throw new IllegalArgumentException("El teléfono debe tener entre 7 y 10 dígitos");
+            throw new IllegalArgumentException("El teléfono debe tener de 7 a 10 dígitos");
         }
         this.telefono = telefono;
     }
