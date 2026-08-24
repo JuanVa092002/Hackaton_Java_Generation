@@ -1,14 +1,16 @@
-package co.generation.clinica.interfaces;
+package interfaces;
 
-import co.generation.clinica.model.Medico;
-import co.generation.clinica.model.Paciente;
-import co.generation.clinica.model.Turno;
+
+
+import model.Medico;
+import model.Paciente;
+import model.Turno;
 
 import java.time.LocalDate;
-import java.util.List;
+import  java.util.List;
+
 
 public interface Consultable {
-
     List<Turno> listarTurnosDelDia(LocalDate fecha);
 
     List<Turno> buscarPorMedico(Medico medico);
