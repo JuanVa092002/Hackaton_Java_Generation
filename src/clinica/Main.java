@@ -23,26 +23,30 @@ public class Main {
 
         while (!salir) {
             Menu();
-            System.out.print("Por favor seleccione una opción: ");
+            System.out.print("Por favor seleccione una opcion: ");
             String opciones = captura.nextLine().trim();
 
             switch (opciones) {
                 case "1" -> {
                     System.out.println("\n--- REGISTRO DE PACIENTE ---");
-                    System.out.print("Cédula: ");
+                    System.out.print("Cedula: ");
                     String cedula = captura.nextLine();
                     System.out.print("Nombre: ");
                     String nombre = captura.nextLine();
                     System.out.print("Apellido: ");
                     String apellido = captura.nextLine();
-                    System.out.print("Teléfono: ");
+                    System.out.print("Telefono: ");
                     String telefono = captura.nextLine();
-
-                    Paciente p = new Paciente(cedula, nombre, apellido, telefono);
-                    servicio.registrarPaciente(p);
+                    try {
+                        Paciente p = new Paciente(cedula, nombre, apellido, telefono);
+                        servicio.registrarPaciente(p);
+                        System.out.println("Paciente registrado con éxito.");
+                    } catch (IllegalArgumentException e) {
+                        System.out.println("Error al registrar: " + e.getMessage());
+                    }
                 }
                 case "2" -> {
-                    System.out.println("\n--- REGISTRAR MÉDICO ---");
+                    System.out.println("\n--- REGISTRAR MEDICO ---");
                     System.out.print("Nombre: ");
                     String nombre = captura.nextLine();
                     System.out.print("Apellido: ");
@@ -55,23 +59,23 @@ public class Main {
                         Medico m = new Medico(nombre, apellido, esp);
                         servicio.registrarMedico(m);
                     } catch (IllegalArgumentException e) {
-                        System.out.println("Especialidad no válida.");
+                        System.out.println("Especialidad no valida.");
                     }
                 }
                 case "3" -> {
                     System.out.println("\n--- ASIGNAR TURNO ---");
-                    System.out.print("Cédula del paciente: ");
+                    System.out.print("Cedula del paciente: ");
                     String cedula = captura.nextLine().trim();
                     Paciente pac = servicio.buscarPorCedula(cedula);
 
-                    System.out.print("Nombre del médico: ");
+                    System.out.print("Nombre del medico: ");
                     String nomMed = captura.nextLine().trim();
-                    System.out.print("Apellido del médico: ");
+                    System.out.print("Apellido del medico: ");
                     String apeMed = captura.nextLine().trim();
                     Medico med = servicio.buscarPorNombreApellido(nomMed, apeMed);
 
                     if (pac == null || med == null) {
-                        System.out.println("Error: Paciente o médico no encontrado.");
+                        System.out.println("Error: Paciente o medico no encontrado.");
                         break;
                     }
 
@@ -91,12 +95,12 @@ public class Main {
                     servicio.asignarTurno(turno);
                 }
                 case "4" -> {
-                    System.out.print("Ingrese fecha (YYYY-MM-DD): ");
+                    System.out.print("Ingrese fecha (YY-MM-DD): ");
                     String fechaStr = captura.nextLine().trim();
                     try {
                         servicio.listarTurnosDelDia(LocalDate.parse(fechaStr)).forEach(System.out::println);
                     } catch (Exception e) {
-                        System.out.println("Formato de fecha inválido. Debe ser YYYY-MM-DD.");
+                        System.out.println("Formato de fecha invalido. Debe ser YY-MM-DD.");
                     }
                 }
                 case "5" -> {
@@ -105,19 +109,19 @@ public class Main {
                     servicio.cancelarTurno(id);
                 }
                 case "6" -> {
-                    System.out.print("Nombre del médico: ");
+                    System.out.print("Nombre del medico: ");
                     String nom = captura.nextLine().trim();
-                    System.out.print("Apellido del médico: ");
+                    System.out.print("Apellido del medico: ");
                     String ape = captura.nextLine().trim();
                     Medico med = servicio.buscarPorNombreApellido(nom, ape);
                     if (med != null) {
                         servicio.buscarPorMedico(med).forEach(System.out::println);
                     } else {
-                        System.out.println("Médico no encontrado.");
+                        System.out.println("Medico no encontrado.");
                     }
                 }
                 case "7" -> {
-                    System.out.print("Cédula del paciente: ");
+                    System.out.print("Cedula del paciente: ");
                     String ced = captura.nextLine().trim();
                     Paciente pac = servicio.buscarPorCedula(ced);
                     if (pac != null) {
@@ -136,7 +140,7 @@ public class Main {
                         EstadoTurno nuevoEstado = EstadoTurno.valueOf(estadoStr);
                         servicio.cambiarEstadoTurno(id, nuevoEstado);
                     } catch (IllegalArgumentException e) {
-                        System.out.println("Estado no válido.");
+                        System.out.println("Estado no valido.");
                     }
                 }
                 case "9" -> servicio.listarPacientes();
@@ -146,7 +150,7 @@ public class Main {
                     System.out.println("Hasta pronto. Datos guardados.");
                     salir = true;
                 }
-                default -> System.out.println("---------[ERROR]-----\nOpción no válida.");
+                default -> System.out.println("---------[ERROR]-----\nOpcion no valida.");
             }
             System.out.println();
         }
@@ -155,19 +159,21 @@ public class Main {
     private static void Menu() {
         String separador = "=".repeat(50);
         System.out.println(separador);
-        System.out.printf("| %-46s |\n", "CLINICAAPP - MENÚ");
+        System.out.printf("| %-46s |\n", "              CLINICA DPJ - MENU");
         System.out.println(separador);
         System.out.printf("| %-46s |\n", "1. Registrar paciente");
-        System.out.printf("| %-46s |\n", "2. Registrar médico");
+        System.out.printf("| %-46s |\n", "2. Registrar medico");
         System.out.printf("| %-46s |\n", "3. Asignar turno");
         System.out.printf("| %-46s |\n", "4. Listar turnos del día");
         System.out.printf("| %-46s |\n", "5. Cancelar turno");
-        System.out.printf("| %-46s |\n", "6. Ver turnos por médico");
+        System.out.printf("| %-46s |\n", "6. Ver turnos por medico");
         System.out.printf("| %-46s |\n", "7. Ver turnos por paciente");
         System.out.printf("| %-46s |\n", "8. Cambiar estado de turno");
         System.out.printf("| %-46s |\n", "9. Listar pacientes");
-        System.out.printf("| %-46s |\n", "10. Listar médicos");
+        System.out.printf("| %-46s |\n", "10. Listar medicos");
         System.out.printf("| %-46s |\n", "0. Salir");
+        System.out.printf("| %-46s |\n", "RECUERDE QUE:");
+        System.out.printf("| %-46s |\n","AL SALIR LOS DATOS SERAN GUARDADOS");
         System.out.println(separador);
     }
 }
