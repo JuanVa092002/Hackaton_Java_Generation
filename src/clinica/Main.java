@@ -10,6 +10,7 @@ import clinica.service.ClinicaService;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeParseException;
 import java.util.Scanner;
 
 public class Main {
@@ -95,13 +96,17 @@ public class Main {
                     servicio.asignarTurno(turno);
                 }
                 case "4" -> {
-                    System.out.print("Ingrese fecha (YY-MM-DD): ");
-                    String fechaStr = captura.nextLine().trim();
-                    try {
-                        servicio.listarTurnosDelDia(LocalDate.parse(fechaStr)).forEach(System.out::println);
-                    } catch (Exception e) {
-                        System.out.println("Formato de fecha invalido. Debe ser YY-MM-DD.");
-                    }
+                            LocalDate fecha = null;
+                            while (fecha == null) {
+                                System.out.print("Ingrese fecha (YYYY-MM-DD): ");
+                                String fechaStr = captura.nextLine().trim();
+                                try {
+                                    fecha = LocalDate.parse(fechaStr);
+                                } catch (DateTimeParseException e) {
+                                    System.out.println("Formato invalido. Asegurese de usar el formato YYYY-MM-DD (Ejemplo: 2026-08-28).");
+                                }
+                            }
+                            servicio.listarTurnosDelDia(fecha).forEach(System.out::println);
                 }
                 case "5" -> {
                     System.out.print("ID del turno a cancelar: ");
