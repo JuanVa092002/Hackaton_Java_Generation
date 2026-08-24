@@ -1,6 +1,6 @@
-package src.datos;
-import src.model.*;
-import src.service.ClinicaService;
+package clinica.data;
+import clinica.*;
+
 import java.io.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter; import java.util.List;
