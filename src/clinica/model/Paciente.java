@@ -1,6 +1,6 @@
-package clinica.*;
+package clinica.model;
 
-import interfaces.Registrable;
+import clinica.interfaces.Registrable;
 
 public class Paciente implements Registrable {  //este registrable de interfaces para revisar con cesar
     private int id;

@@ -1,7 +1,6 @@
-package clinica.*;
+package clinica.model;
 
-
-import interfaces.Registrable;
+import clinica.interfaces.Registrable;
 
 public class Medico implements Registrable {
 

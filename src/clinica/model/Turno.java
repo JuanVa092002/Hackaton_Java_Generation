@@ -1,5 +1,4 @@
-package clinica.*;
-
+package clinica.model;
 
 import java.time.LocalDateTime;
 
@@ -26,6 +25,18 @@ public class Turno {
         this.estado = EstadoTurno.PENDIENTE;
     }
 
+    public Turno(Paciente paciente, Medico medico, LocalDateTime fechaHora) {
+        this(fechaHora, paciente, medico);
+    }
+
+    public Turno(int id, Paciente paciente, Medico medico, LocalDateTime fechaHora, EstadoTurno estado) {
+        this.id = id;
+        setPaciente(paciente);
+        setMedico(medico);
+        setFechaHora(fechaHora);
+        setEstado(estado);
+    }
+
     public int getId() {
         return id;
     }
@@ -39,8 +50,8 @@ public class Turno {
     }
 
     public void setFechaHora(LocalDateTime fechaHora) {
-        if (fechaHora == null || !fechaHora.isAfter(LocalDateTime.now())) {
-            throw new IllegalArgumentException("La fecha y hora deben ser validas");
+        if (fechaHora == null) {
+            throw new IllegalArgumentException("La fecha y hora no pueden ser nulas");
         }
         this.fechaHora = fechaHora;
     }
