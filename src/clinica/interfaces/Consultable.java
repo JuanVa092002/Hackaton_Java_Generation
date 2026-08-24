@@ -1,8 +1,6 @@
-package interfaces;
+package clinica.interfaces;
 
-import model.Medico;
-import model.Paciente;
-import model.Turno;
+
 import clinica.model.Medico;
 import clinica.model.Paciente;
 import clinica.model.Turno;
