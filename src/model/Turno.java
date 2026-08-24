@@ -39,7 +39,7 @@ public class Turno {
 
     public void setFechaHora(LocalDateTime fechaHora) {
         if (fechaHora == null || !fechaHora.isAfter(LocalDateTime.now())) {
-            throw new IllegalArgumentException("La fecha y hora deben ser futuras");
+            throw new IllegalArgumentException("La fecha y hora deben ser validas");
         }
         this.fechaHora = fechaHora;
     }
@@ -50,7 +50,7 @@ public class Turno {
 
     public void setPaciente(Paciente paciente) {
         if (paciente == null) {
-            throw new IllegalArgumentException("El paciente no puede ser nulo");
+            throw new IllegalArgumentException("El paciente es obligatorio");
         }
         this.paciente = paciente;
     }
@@ -61,7 +61,7 @@ public class Turno {
 
     public void setMedico(Medico medico) {
         if (medico == null) {
-            throw new IllegalArgumentException("El médico no puede ser nulo");
+            throw new IllegalArgumentException("Seleccione un medico");
         }
         this.medico = medico;
     }
@@ -72,7 +72,7 @@ public class Turno {
 
     public void setEstado(EstadoTurno estado) {
         if (estado == null) {
-            throw new IllegalArgumentException("El estado no puede ser nulo");
+            throw new IllegalArgumentException("El estado es obligatorio");
         }
         this.estado = estado;
     }
@@ -84,15 +84,15 @@ public class Turno {
 
         Turno turno = (Turno) o;
         return fechaHora.equals(turno.fechaHora)
-                && paciente.equals(turno.paciente)
                 && medico.equals(turno.medico);
     }
 
     @Override
     public String toString() {
-        return "Turno #" + id + " | " + fechaHora
-                + " | Paciente: " + paciente.getNombre() + " " + paciente.getApellido()
-                + " | Médico: Dr. " + medico.getNombre() + " " + medico.getApellido()
-                + " | Estado: " + estado;
+        return "[" + estado + "] "
+                + paciente.getNombre() + " " + paciente.getApellido()
+                + " — Dr. " + medico.getNombre() + " " + medico.getApellido()
+                + " (" + medico.getEspecialidad() + ")"
+                + " — " + fechaHora;
     }
 }

@@ -36,7 +36,7 @@ public class Medico implements Registrable {
 
     public void setNombre(String nombre) {
         if (nombre == null || nombre.trim().isEmpty()) {
-            throw new IllegalArgumentException("El nombre no puede ser nulo ni vacío");
+            throw new IllegalArgumentException("El nombre no puede estar vacio");
         }
         this.nombre = nombre.trim();
     }
@@ -47,7 +47,7 @@ public class Medico implements Registrable {
 
     public void setApellido(String apellido) {
         if (apellido == null || apellido.trim().isEmpty()) {
-            throw new IllegalArgumentException("El apellido no puede ser nulo ni vacío");
+            throw new IllegalArgumentException("El apellido no puede estar vacio");
         }
         this.apellido = apellido.trim();
     }
@@ -58,7 +58,7 @@ public class Medico implements Registrable {
 
     public void setEspecialidad(Especialidad especialidad) {
         if (especialidad == null) {
-            throw new IllegalArgumentException("La especialidad no puede ser nula");
+            throw new IllegalArgumentException("La especialidad no puede estar vacia");
         }
         this.especialidad = especialidad;
     }
