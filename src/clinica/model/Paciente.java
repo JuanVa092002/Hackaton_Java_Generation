@@ -77,7 +77,7 @@ public class Paciente implements Registrable {  //este registrable de interfaces
 
     public void setTelefono(String telefono) {
         if (telefono == null || !telefono.trim().matches("^[0-9]{7,10}$")) {
-            throw new IllegalArgumentException("El teléfono debe tener de 7 a 10 dígitos y contener solo numeros");
+            throw new IllegalArgumentException("El telefono debe tener de 7 a 10 digitos y contener solo numeros");
         }
         this.telefono = telefono.trim();
     }
