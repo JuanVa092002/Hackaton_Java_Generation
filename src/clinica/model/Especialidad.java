@@ -1,4 +1,4 @@
-package clinica.*;
+package clinica.model;
 
 public enum Especialidad {
     GENERAL,

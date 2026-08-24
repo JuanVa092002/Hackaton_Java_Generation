@@ -1,7 +1,11 @@
 package clinica;
 
 import clinica.data.DatosCSV;
-import clinica.*;
+import clinica.model.Especialidad;
+import clinica.model.EstadoTurno;
+import clinica.model.Medico;
+import clinica.model.Paciente;
+import clinica.model.Turno;
 import clinica.service.ClinicaService;
 
 import java.time.LocalDate;
@@ -90,7 +94,7 @@ public class Main {
                     System.out.print("Ingrese fecha (YYYY-MM-DD): ");
                     String fechaStr = captura.nextLine().trim();
                     try {
-                        servicio.listarTurnosDelDia(LocalDate.parse(fechaStr)).forEach(System.out.println);
+                        servicio.listarTurnosDelDia(LocalDate.parse(fechaStr)).forEach(System.out::println);
                     } catch (Exception e) {
                         System.out.println("Formato de fecha inválido. Debe ser YYYY-MM-DD.");
                     }
@@ -107,7 +111,7 @@ public class Main {
                     String ape = captura.nextLine().trim();
                     Medico med = servicio.buscarPorNombreApellido(nom, ape);
                     if (med != null) {
-                        servicio.buscarPorMedico(med).forEach(System.out.println);
+                        servicio.buscarPorMedico(med).forEach(System.out::println);
                     } else {
                         System.out.println("Médico no encontrado.");
                     }
@@ -117,7 +121,7 @@ public class Main {
                     String ced = captura.nextLine().trim();
                     Paciente pac = servicio.buscarPorCedula(ced);
                     if (pac != null) {
-                        servicio.buscarPorPaciente(pac).forEach(System.out.println);
+                        servicio.buscarPorPaciente(pac).forEach(System.out::println);
                     } else {
                         System.out.println("Paciente no encontrado.");
                     }

@@ -1,6 +1,8 @@
 package clinica.interfaces;
 
-import clinica.*;
+import clinica.model.Medico;
+import clinica.model.Paciente;
+import clinica.model.Turno;
 
 import java.time.LocalDate;
 import java.util.*;
