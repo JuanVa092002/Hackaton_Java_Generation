@@ -1,11 +1,11 @@
 # ClinicaApp
 
-Sistema de gestión de turnos médicos (hackathon Generation Colombia). Aplicación Java de consola con persistencia CSV.
+Sistema de gestión de turnos médicos (Hackathon Generation Colombia). Aplicación Java de consola con persistencia CSV.
 
 ## Equipo
 
-- Nombre del equipo: _(completar)_
-- Integrantes: _(completar nombres)_
+- Nombre del equipo: _(CLINICA DPJ - GRUPO 1)_
+- Integrantes: _(JUAN CARLOS PASTAS VALENCIA,CESAR RESTREPO,KENDARG REAL,DANNIS DAYANA RINCON)_
 
 ## Cómo ejecutarlo en IntelliJ IDEA
 

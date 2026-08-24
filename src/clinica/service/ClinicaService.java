@@ -31,12 +31,12 @@ public class ClinicaService implements Consultable {
 
     public void registrarPaciente(Paciente p) {
         if (p == null || p.esValido() == false) {
-            System.out.println("Error: el paciente no es válido. Revisa cédula, nombre, apellido y teléfono.");
+            System.out.println("Error: el paciente no es valido. Revisa cedula, nombre, apellido y telefono.");
             return;
         }
         // contains usa el equals de Paciente (la cédula)
         if (pacientes.contains(p)) {
-            System.out.println("Error: ya existe un paciente con esa cédula.");
+            System.out.println("Error: ya existe un paciente con esa cedula.");
             return;
         }
         p.setId(siguienteIdPacientes());
@@ -88,16 +88,16 @@ public class ClinicaService implements Consultable {
 
     public void registrarMedico(Medico m) {
         if (m == null || m.esValido() == false) {
-            System.out.println("Error: el médico no es válido. Revisa nombre, apellido y especialidad.");
+            System.out.println("Error: el medico no es valido. Revisa nombre, apellido y especialidad.");
             return;
         }
         if (medicos.contains(m)) {
-            System.out.println("Error: ya existe un médico con ese nombre y apellido.");
+            System.out.println("Error: ya existe un medico con ese nombre y apellido.");
             return;
         }
         m.setId(siguienteIdMedicos());
         medicos.add(m);
-        System.out.println("Médico registrado: " + m);
+        System.out.println("Medico registrado: " + m);
     }
 
     public Medico buscarPorNombreApellido(String nombre, String apellido) {
@@ -115,7 +115,7 @@ public class ClinicaService implements Consultable {
 
     public void listarMedicos() {
         if (medicos.size() == 0) {
-            System.out.println("No hay médicos registrados.");
+            System.out.println("No hay medicos registrados.");
             return;
         }
         List<Medico> copia = new ArrayList<Medico>();
@@ -143,25 +143,25 @@ public class ClinicaService implements Consultable {
 
     public void asignarTurno(Turno t) {
         if (t == null || t.getPaciente() == null || t.getMedico() == null || t.getFechaHora() == null) {
-            System.out.println("Error: el turno no es válido.");
+            System.out.println("Error: el turno no es valido.");
             return;
         }
 
         Paciente paciente = buscarPorCedula(t.getPaciente().getCedula());
         if (paciente == null) {
-            System.out.println("Error: el paciente no está registrado.");
+            System.out.println("Error: el paciente no esta registrado.");
             return;
         }
 
         Medico medico = buscarPorNombreApellido(t.getMedico().getNombre(), t.getMedico().getApellido());
         if (medico == null) {
-            System.out.println("Error: el médico no está registrado.");
+            System.out.println("Error: el medico no esta registrado.");
             return;
         }
 
         // equals de Turno compara médico y fechaHora
         if (turnos.contains(t)) {
-            System.out.println("Error: el médico ya tiene un turno en esa fecha y hora.");
+            System.out.println("Error: el medico ya tiene un turno en esa fecha y hora.");
             return;
         }
 

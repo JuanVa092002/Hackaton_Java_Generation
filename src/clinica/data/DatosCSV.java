@@ -1,11 +1,11 @@
 package clinica.data;
 
-import clinica.service.ClinicaService;
-import clinica.model.Paciente;
-import clinica.model.Medico;
-import clinica.model.Turno;
 import clinica.model.Especialidad;
 import clinica.model.EstadoTurno;
+import clinica.model.Medico;
+import clinica.model.Paciente;
+import clinica.model.Turno;
+import clinica.service.ClinicaService;
 
 import java.io.*;
 import java.time.LocalDateTime;
@@ -13,93 +13,128 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 public class DatosCSV {
-    private static final String DIR = "datos/";
-    private static final String F_PACIENTES = DIR + "pacientes.csv";
-    private static final String F_MEDICOS = DIR + "medicos.csv";
-    private static final String F_TURNOS = DIR + "turnos.csv";
-    private static final DateTimeFormatter FMT = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+
+    private static final DateTimeFormatter FMT =
+            DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+
+    private static File carpetaDatos() {
+        File actual = new File(System.getProperty("user.dir"));
+        File cursor = actual;
+        for (int i = 0; i < 5; i++) {
+            if (new File(cursor, "src").isDirectory()) {
+                File datos = new File(cursor, "datos");
+                datos.mkdirs();
+                return datos;
+            }
+            File padre = cursor.getParentFile();
+            if (padre == null) {
+                break;
+            }
+            cursor = padre;
+        }
+        File datos = new File(actual, "datos");
+        datos.mkdirs();
+        return datos;
+    }
+
+    private static File archivo(String nombre) {
+        return new File(carpetaDatos(), nombre);
+    }
 
     public static void cargar(ClinicaService servicio) {
-        new File(DIR).mkdirs();
-        cargarPacientes(servicio); 
-        cargarMedicos(servicio); 
+        carpetaDatos();
+        cargarPacientes(servicio);
+        cargarMedicos(servicio);
         cargarTurnos(servicio);
     }
 
     private static void cargarPacientes(ClinicaService servicio) {
-        File f = new File(F_PACIENTES); 
-        if (!f.exists()) return;
+        File f = archivo("pacientes.csv");
+        if (!f.exists()) {
+            return;
+        }
+
         try (BufferedReader br = new BufferedReader(new FileReader(f))) {
             String linea;
             while ((linea = br.readLine()) != null) {
-                if (linea.isBlank()) continue;
+                if (linea.isBlank()) {
+                    continue;
+                }
+
                 String[] p = linea.split(",", -1);
+
                 servicio.getPacientes().add(new Paciente(
                         Integer.parseInt(p[0].trim()),
-                        p[1].trim(), 
-                        p[2].trim(), 
-                        p[3].trim(), 
+                        p[1].trim(),
+                        p[2].trim(),
+                        p[3].trim(),
                         p[4].trim()
                 ));
             }
-        } catch (IOException e) { 
-            System.out.println("Error: " + e.getMessage()); 
+        } catch (IOException e) {
+            System.out.println("Error al cargar pacientes: " + e.getMessage());
+        } catch (NumberFormatException e) {
+            System.out.println("Error de formato numérico en el ID: " + e.getMessage());
         }
     }
 
     private static void cargarMedicos(ClinicaService servicio) {
-        File f = new File(F_MEDICOS); 
-        if (!f.exists()) return;
+        File f = archivo("medicos.csv");
+        if (!f.exists()) {
+            return;
+        }
         try (BufferedReader br = new BufferedReader(new FileReader(f))) {
             String linea;
             while ((linea = br.readLine()) != null) {
-                if (linea.isBlank()) continue;
+                if (linea.isBlank()) {
+                    continue;
+                }
                 String[] p = linea.split(",", -1);
                 servicio.getMedicos().add(new Medico(
-                        Integer.parseInt(p[0].trim()), 
-                        p[1].trim(), 
-                        p[2].trim(),
-                        Especialidad.valueOf(p[3].trim())
-                ));
+                        Integer.parseInt(p[0].trim()), p[1].trim(), p[2].trim(),
+                        Especialidad.valueOf(p[3].trim())));
             }
-        } catch (IOException e) { 
-            System.out.println("Error: " + e.getMessage()); 
+        } catch (IOException e) {
+            System.out.println("Error: " + e.getMessage());
         }
     }
 
     private static void cargarTurnos(ClinicaService servicio) {
-        File f = new File(F_TURNOS); 
-        if (!f.exists()) return;
+        File f = archivo("turnos.csv");
+        if (!f.exists()) {
+            return;
+        }
         try (BufferedReader br = new BufferedReader(new FileReader(f))) {
             String linea;
             while ((linea = br.readLine()) != null) {
-                if (linea.isBlank()) continue;
+                if (linea.isBlank()) {
+                    continue;
+                }
                 String[] p = linea.split(",", -1);
                 Paciente pac = servicio.buscarPorCedula(p[1].trim());
                 Medico med = servicio.buscarPorNombreApellido(p[2].trim(), p[3].trim());
-                if (pac == null || med == null) continue;
+                if (pac == null || med == null) {
+                    continue;
+                }
                 servicio.getTurnos().add(new Turno(
-                        Integer.parseInt(p[0].trim()), 
-                        pac, 
-                        med,
+                        Integer.parseInt(p[0].trim()), pac, med,
                         LocalDateTime.parse(p[4].trim(), FMT),
-                        EstadoTurno.valueOf(p[5].trim())
-                ));
+                        EstadoTurno.valueOf(p[5].trim())));
             }
-        } catch (IOException e) { 
-            System.out.println("Error: " + e.getMessage()); 
+        } catch (IOException e) {
+            System.out.println("Error: " + e.getMessage());
         }
     }
 
     public static void guardar(ClinicaService servicio) {
-        new File(DIR).mkdirs();
+        carpetaDatos();
         guardarPacientes(servicio.getPacientes());
         guardarMedicos(servicio.getMedicos());
         guardarTurnos(servicio.getTurnos());
     }
 
     private static void guardarPacientes(List<Paciente> lista) {
-        try (PrintWriter pw = new PrintWriter(new FileWriter(F_PACIENTES))) {
+        try (PrintWriter pw = new PrintWriter(new FileWriter(archivo("pacientes.csv")))) {
             for (Paciente p : lista) {
                 pw.println(p.getId() + "," + p.getCedula() + "," + p.getNombre() + "," + p.getApellido() + "," + p.getTelefono());
             }
@@ -109,7 +144,7 @@ public class DatosCSV {
     }
 
     private static void guardarMedicos(List<Medico> lista) {
-        try (PrintWriter pw = new PrintWriter(new FileWriter(F_MEDICOS))) {
+        try (PrintWriter pw = new PrintWriter(new FileWriter(archivo("medicos.csv")))) {
             for (Medico m : lista) {
                 pw.println(m.getId() + "," + m.getNombre() + "," + m.getApellido() + "," + m.getEspecialidad());
             }
@@ -119,7 +154,7 @@ public class DatosCSV {
     }
 
     private static void guardarTurnos(List<Turno> lista) {
-        try (PrintWriter pw = new PrintWriter(new FileWriter(F_TURNOS))) {
+        try (PrintWriter pw = new PrintWriter(new FileWriter(archivo("turnos.csv")))) {
             for (Turno t : lista) {
                 pw.println(t.getId() + "," +
                         t.getPaciente().getCedula() + "," +
