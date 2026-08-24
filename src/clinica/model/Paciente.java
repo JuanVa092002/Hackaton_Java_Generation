@@ -43,7 +43,10 @@ public class Paciente implements Registrable {  //este registrable de interfaces
         if (cedula == null || cedula.trim().isEmpty()) {  //comporbar que no haya enviado un null  y elimianr espacios de los extremos
             throw new IllegalArgumentException("El documento no puede estar vacio");
         }
-        this.cedula = cedula;
+        if (!cedula.trim().matches("^[0-9]{6,10}$")) {
+            throw new IllegalArgumentException("La cedula debe contener solo numeros y tener entre 6 y 10 dígitos");
+        }
+        this.cedula = cedula.trim();
     }
 
     public String getNombre() {
@@ -73,10 +76,10 @@ public class Paciente implements Registrable {  //este registrable de interfaces
     }
 
     public void setTelefono(String telefono) {
-        if (telefono == null || !telefono.matches("^[0-9]{7,10}$")) {
-            throw new IllegalArgumentException("El teléfono debe tener de 7 a 10 dígitos");
+        if (telefono == null || !telefono.trim().matches("^[0-9]{7,10}$")) {
+            throw new IllegalArgumentException("El teléfono debe tener de 7 a 10 dígitos y contener solo numeros");
         }
-        this.telefono = telefono;
+        this.telefono = telefono.trim();
     }
 
     @Override
@@ -86,10 +89,10 @@ public class Paciente implements Registrable {  //este registrable de interfaces
 
     @Override
     public boolean esValido() {      //cuando los datos del paciente estan bien o mal escritos true o false
-        return cedula != null && !cedula.trim().isEmpty()
+        return cedula != null && cedula.trim().matches("^[0-9]{5,15}$")
                 && nombre != null && !nombre.trim().isEmpty()
                 && apellido != null && !apellido.trim().isEmpty()
-                && telefono != null && telefono.matches("^[0-9]{7,10}$");
+                && telefono != null && telefono.trim().matches("^[0-9]{7,10}$");
     }
 
     @Override
