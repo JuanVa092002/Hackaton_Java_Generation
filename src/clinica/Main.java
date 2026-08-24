@@ -1,7 +1,7 @@
 package clinica;
 
 import clinica.data.DatosCSV;
-import clinica.model.*;
+import clinica.*;
 import clinica.service.ClinicaService;
 
 import java.time.LocalDate;
