@@ -1,4 +1,6 @@
-package co.generation.clinica.interfaces;
+package clinica.interfaces;
+
+import clinica.*;
 
 public interface Registrable {
 
