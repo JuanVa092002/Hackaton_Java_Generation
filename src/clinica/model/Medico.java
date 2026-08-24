@@ -38,6 +38,9 @@ public class Medico implements Registrable {
         if (nombre == null || nombre.trim().isEmpty()) {
             throw new IllegalArgumentException("El nombre no puede ser nulo ni vacío");
         }
+        if (!nombre.trim().matches("^[a-zA-ZáéíóúÁÉÍÓÚñÑ]+([ ]+[a-zA-ZáéíóúÁÉÍÓÚñÑ]+)*$")) {
+            throw new IllegalArgumentException("El nombre solo puede tener letras");
+        }
         this.nombre = nombre.trim();
     }
 
@@ -48,6 +51,9 @@ public class Medico implements Registrable {
     public void setApellido(String apellido) {
         if (apellido == null || apellido.trim().isEmpty()) {
             throw new IllegalArgumentException("El apellido no puede estar vacio");
+        }
+        if (!apellido.trim().matches("^[a-zA-ZáéíóúÁÉÍÓÚñÑ]+([ ]+[a-zA-ZáéíóúÁÉÍÓÚñÑ]+)*$")) {
+            throw new IllegalArgumentException("El apellido solo puede tener letras");
         }
         this.apellido = apellido.trim();
     }
@@ -70,8 +76,8 @@ public class Medico implements Registrable {
 
     @Override
     public boolean esValido() {
-        return nombre != null && !nombre.trim().isEmpty()
-                && apellido != null && !apellido.trim().isEmpty()
+        return nombre != null && nombre.trim().matches("^[a-zA-ZáéíóúÁÉÍÓÚñÑ]+([ ]+[a-zA-ZáéíóúÁÉÍÓÚñÑ]+)*$")
+                && apellido != null && apellido.trim().matches("^[a-zA-ZáéíóúÁÉÍÓÚñÑ]+([ ]+[a-zA-ZáéíóúÁÉÍÓÚñÑ]+)*$")
                 && especialidad != null;
     }
 

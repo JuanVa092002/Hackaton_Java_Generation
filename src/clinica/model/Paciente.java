@@ -57,6 +57,9 @@ public class Paciente implements Registrable {  //este registrable de interfaces
         if (nombre == null || nombre.trim().isEmpty()) {
             throw new IllegalArgumentException("El nombre no puede estar vacio");
         }
+        if (!nombre.trim().matches("^[a-zA-ZáéíóúÁÉÍÓÚñÑ]+([ ]+[a-zA-ZáéíóúÁÉÍÓÚñÑ]+)*$")) {
+            throw new IllegalArgumentException("El nombre solo puede tener letras");
+        }
         this.nombre = nombre.trim();
     }
 
@@ -67,6 +70,9 @@ public class Paciente implements Registrable {  //este registrable de interfaces
     public void setApellido(String apellido) {
         if (apellido == null || apellido.trim().isEmpty()) {
             throw new IllegalArgumentException("El apellido no puede estar vacio");
+        }
+        if (!apellido.trim().matches("^[a-zA-ZáéíóúÁÉÍÓÚñÑ]+([ ]+[a-zA-ZáéíóúÁÉÍÓÚñÑ]+)*$")) {
+            throw new IllegalArgumentException("El apellido solo puede tener letras");
         }
         this.apellido = apellido.trim();
     }
@@ -89,9 +95,9 @@ public class Paciente implements Registrable {  //este registrable de interfaces
 
     @Override
     public boolean esValido() {      //cuando los datos del paciente estan bien o mal escritos true o false
-        return cedula != null && cedula.trim().matches("^[0-9]{5,15}$")
-                && nombre != null && !nombre.trim().isEmpty()
-                && apellido != null && !apellido.trim().isEmpty()
+        return cedula != null && cedula.trim().matches("^[0-9]{6,10}$")
+                && nombre != null && nombre.trim().matches("^[a-zA-ZáéíóúÁÉÍÓÚñÑ]+([ ]+[a-zA-ZáéíóúÁÉÍÓÚñÑ]+)*$")
+                && apellido != null && apellido.trim().matches("^[a-zA-ZáéíóúÁÉÍÓÚñÑ]+([ ]+[a-zA-ZáéíóúÁÉÍÓÚñÑ]+)*$")
                 && telefono != null && telefono.trim().matches("^[0-9]{7,10}$");
     }
 
